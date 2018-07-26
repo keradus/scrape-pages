@@ -1,41 +1,15 @@
 <html>
-  <style>
-  html {
-    font-family: sans-serif;
-  }
-  #diagram {
-    margin-top: 30px;
-  }
-  .node {
-    fill: steelblue;
-    stroke: none;
-  }
-  .link {
-    fill: none;
-    stroke: #ccc;
-    stroke-width: 1px;
-  }
-  .label {
-    fill: white;
-    // text-anchor: middle;
-  }
-  .box {
-    fill: steelblue;
-  }
-  .scrape-step {
-    white-space: nowrap;
-    text-align: center;
-  }
-  .name {
-    background-color: gainsboro;
-  }
-  .name, .download {
-    border-bottom: solid 0.5px;
-  }
-  </style>
+  <link rel="stylesheet" href="./index.css"/>
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="./config.js"></script>
   <script src="./index.js"></script>
   <body>
-    <div id="tree-container"></div>
+    <div id="container">
+      <div id="user-input">
+        <label for="config-input">Enter a Config</label>
+        <textarea id="config-input" name="config-input" cols="30" rows="10"></textarea>
+      </div>
+      <div id="tree-container"></div>
+    </div>
   </body>
 </html>
