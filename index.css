@@ -26,10 +26,18 @@ h5 {
 }
 a {
   text-decoration: none;
+  position: relative;
   color: white;
 }
 i {
-  font-size: 23px;
+  font-size: 26px;
+  line-height: 20px;
+}
+button i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 #navbar {
   display: flex;
@@ -54,8 +62,8 @@ i {
 }
 #user-input.hidden {
   margin: 0;
-  overflow:hidden;
-  width:0;
+  overflow: hidden;
+  width: 0;
 }
 #user-input label {
   display: block;

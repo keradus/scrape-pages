@@ -40,7 +40,7 @@ const update = ({
     ...(step.scrapeEach || []),
     ...(step.scrapeNext ? [step.scrapeNext] : [])
   ]);
-  const treemap = d3.tree().size([500, initialWidth]);
+  const treemap = d3.tree().size([initialHeight, initialWidth])
   treemap(root);
   traverse(root, (d, i) => {
     d.y = d.depth * (rectNode[get.height] * 1.5);
@@ -156,7 +156,7 @@ window.onload = () => {
   const margin = { top: 0, right: 20, bottom: 100, left: 20 };
   // dynamically set these later
   let width = 200;
-  height = 100;
+  height = 400;
   // elements
   const rectNode = { width: 140, height: 75, textMargin: 5 };
   const baseSvg = d3
