@@ -217,4 +217,12 @@ window.onload = () => {
   };
   userInput.onchange = updateFromInput;
   userInput.onkeyup = updateFromInput;
+  const inputContainer = document.getElementById('user-input')
+
+  const hideButton = document.getElementById('hide-button')
+  let configOpen = true
+  hideButton.onclick = () => {
+    configOpen = !configOpen
+    inputContainer.className = configOpen ? '' : 'hidden'
+  }
 };
