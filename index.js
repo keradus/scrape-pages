@@ -23,16 +23,13 @@ const parseText = configStep => {
 const update = ({
   rectNode,
   get,
-  initialWidth,
-  initialHeight,
   baseSvg,
+  svgGroup,
   margin,
   nodeGroup,
   linkGroup,
   diagonal
 }) => config => {
-  let width = initialWidth,
-    height = initialHeight;
   const arrowSize = 12;
   const downloadToParse = 20;
 
@@ -40,21 +37,20 @@ const update = ({
     ...(step.scrapeEach || []),
     ...(step.scrapeNext ? [step.scrapeNext] : [])
   ]);
-  const treemap = d3.tree().size([initialHeight, initialWidth])
+  const treemap = d3
+    .tree()
+    .nodeSize([
+      rectNode.height + rectNode.margin,
+      rectNode.width + rectNode.margin
+    ]);
   treemap(root);
-  traverse(root, (d, i) => {
-    d.y = d.depth * (rectNode[get.height] * 1.5);
-    // d.x = d.x + d.depth * 17 // make arrow start at next parse
-    if (d.y + rectNode.width > width) width = d.y + rectNode.width;
-    if (d.x + rectNode.height > height) height = d.x;
-  });
   const descendants = root.descendants().sort((a, b) => b.y - a.y); // sort for use w/ scrapeNext
   const links = root.links().map(d => ({
     ...d,
     source: {
       ...d.source,
       y: d.source.y + rectNode.width, // make the line start after the rectangle
-      x: d.source.x + downloadToParse
+      x: d.source.x + downloadToParse // make arrow start at parse
     },
     target: {
       ...d.target,
@@ -62,13 +58,8 @@ const update = ({
       x: d.target.x
     }
   }));
-  const incrementers = descendants.filter(
-    d => d.data.download && d.data.download.increment
-  );
-
-  baseSvg
-    .attr("width", width + margin.right + margin.left)
-    .attr("height", height + margin.top + margin.bottom);
+  nodeGroup.selectAll("*").remove();
+  linkGroup.selectAll("*").remove();
 
   // Nodes
   const gNodeAll = nodeGroup.selectAll("g").data(descendants);
@@ -76,12 +67,11 @@ const update = ({
   const gNode = gNodeAll
     .enter()
     .append("g")
-    .merge(gNodeAll)
+    // .merge(gNodeAll)
     .attr(
       "transform",
       d => `translate(${d[get.x]}, ${d[get.y] - rectNode.height / 2})`
     );
-  gNodeAll.exit().remove();
 
   // Labels
   const labelDiv = gNode
@@ -92,7 +82,17 @@ const update = ({
     .attr("height", rectNode.height)
     .append("xhtml:div")
     .classed("scrape-step", true)
-    .attr("title", d => d.data.name);
+    .attr("title", d =>
+      JSON.stringify(
+        d.data,
+        (k, v) => {
+          if (k === "scrapeEach" && v.length) return "" + v;
+          else if (k === "scrapeNext" && v) return "" + v;
+          else return v;
+        },
+        2
+      )
+    );
   labelDiv
     .append("div")
     .classed("name", true)
@@ -141,7 +141,16 @@ const update = ({
     .append("path")
     .attr("d", diagonal)
     .attr("marker-end", "url(#end-arrow)");
-  linksAll.exit().remove();
+
+  // recenter tree
+  const treeBBox = svgGroup.node().getBBox();
+  baseSvg
+    .attr("width", treeBBox.width + margin.right + margin.left)
+    .attr("height", treeBBox.height + margin.top + margin.bottom);
+  svgGroup.attr(
+    "transform",
+    `translate(${margin.left}, ${treeBBox.height / 2 + margin.top})`
+  );
 };
 
 window.onload = () => {
@@ -153,12 +162,12 @@ window.onload = () => {
     height: "width"
   };
 
-  const margin = { top: 0, right: 20, bottom: 100, left: 20 };
+  const margin = { top: 50, right: 20, bottom: 50, left: 50 };
   // dynamically set these later
   let width = 200;
-  height = 400;
+  height = 200;
   // elements
-  const rectNode = { width: 140, height: 75, textMargin: 5 };
+  const rectNode = { width: 140, height: 75, textMargin: 5, margin: 68 };
   const baseSvg = d3
     .select("#tree-container")
     .append("svg")
@@ -195,9 +204,8 @@ window.onload = () => {
   const updater = update({
     rectNode,
     get,
-    initialWidth: width,
-    initialHeight: height,
     baseSvg,
+    svgGroup,
     margin,
     nodeGroup,
     linkGroup,
@@ -211,22 +219,22 @@ window.onload = () => {
     try {
       const newConfig = JSON.parse(e.target.value);
       updater(newConfig);
-      userInput.className = ''
+      userInput.className = "";
     } catch (e) {
       if (e.name !== "SyntaxError") throw e;
-      userInput.className = 'invalid'
+      userInput.className = "invalid";
     }
   };
   userInput.onchange = updateFromInput;
   userInput.onkeyup = updateFromInput;
-  const inputContainer = document.getElementById('user-input')
+  const inputContainer = document.getElementById("user-input");
 
-  const hideButton = document.getElementById('hide-button')
-  let configOpen = true
+  const hideButton = document.getElementById("hide-button");
+  let configOpen = true;
   hideButton.onclick = () => {
-    configOpen = !configOpen
-    inputContainer.className = configOpen ? '' : 'hidden'
-    const icon = hideButton.children[0]
-    icon.className = configOpen ? 'fas fa-caret-left' : 'fas fa-caret-right'
-  }
+    configOpen = !configOpen;
+    inputContainer.className = configOpen ? "" : "hidden";
+    const icon = hideButton.children[0];
+    icon.className = configOpen ? "fas fa-caret-left" : "fas fa-caret-right";
+  };
 };

@@ -73,6 +73,7 @@ button i {
   font-size: 12px;
   flex-grow: 1;
   margin-bottom: 10px;
+  font-family:monospace;
 }
 #user-input .invalid:focus {
   outline: none !important;
@@ -84,6 +85,7 @@ button i {
 }
 #hide-button-container {
   position: relative;
+  z-index: 99;
 }
 #hide-button {
   position: absolute;
@@ -97,6 +99,9 @@ button i {
   overflow: scroll;
   width: 100%;
   min-height: 200px;
+}
+#tree-container > svg {
+  position:relative;
 }
 .link {
   fill: none;
