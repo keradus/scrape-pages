@@ -1,23 +1,35 @@
 :root {
   --primary: #78909c;
   --primary-dark: #4b636e;
-  --secondary: #bdbdbd;
+  --secondary: #bcaaa4;
   --secondary-light: white;
+  --font-size: 16px;
 }
 html,
 body {
-  font-size: 16px;
+  font-size: var(--font-size);
   padding: 0;
   margin: 0;
   font-family: sans-serif;
+  height: 100%;
 }
 body {
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
 }
 a {
-  text-decoration:none;
+  text-decoration: none;
   color: white;
+}
+i {
+  font-size: 23px;
 }
 #navbar {
   display: flex;
@@ -27,20 +39,23 @@ a {
   background-color: var(--primary-dark);
   color: white;
 }
+#title-container {
+  padding: 12px 0;
+}
 #container {
-  /* height: 100%; */
   display: flex;
-  flex-direction: row;
-  flex-grow:1;
-  /* justify-content: space-between; */
+  flex-grow: 1;
 }
 #user-input {
   margin: 10px;
   display: flex;
   flex-direction: column;
-  position:relative;
-  /* width:100%; */
-  /* flex-shrink:2; */
+  position: relative;
+}
+#user-input.hidden {
+  margin: 0;
+  overflow:hidden;
+  width:0;
 }
 #user-input label {
   display: block;
@@ -49,12 +64,23 @@ a {
   width: 300px;
   font-size: 12px;
   flex-grow: 1;
+  margin-bottom: 10px;
+}
+#user-input .invalid:focus {
+  outline: none !important;
+  border-color: green;
+  box-shadow: 0 0 1px 2px red;
+}
+#normalize-button {
+  font-size: var(--font-size);
 }
 #hide-button-container {
-  position:relative;
+  position: relative;
 }
 #hide-button {
-  position:absolute;
+  position: absolute;
+  width: 40px;
+  height: 25px;
 }
 #tree-container {
   font-family: monospace;
@@ -95,11 +121,4 @@ a {
 }
 .identity {
   font-family: STIXGeneral-Italic;
-}
-.hidden {
-  /* display: none !important; */
-  width: 0;
-  padding: 0;
-  margin: 0 !important;
-  overflow:hidden;
 }

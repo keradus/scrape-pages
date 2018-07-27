@@ -211,8 +211,10 @@ window.onload = () => {
     try {
       const newConfig = JSON.parse(e.target.value);
       updater(newConfig);
+      userInput.className = ''
     } catch (e) {
       if (e.name !== "SyntaxError") throw e;
+      userInput.className = 'invalid'
     }
   };
   userInput.onchange = updateFromInput;
@@ -224,5 +226,7 @@ window.onload = () => {
   hideButton.onclick = () => {
     configOpen = !configOpen
     inputContainer.className = configOpen ? '' : 'hidden'
+    const icon = hideButton.children[0]
+    icon.className = configOpen ? 'fas fa-caret-left' : 'fas fa-caret-right'
   }
 };
