@@ -1,3 +1,6 @@
+/* @import url('/@fortawesome/fontawesome-free/css/all.min.css'); */
+/* @import url('@fortawesome/fontawesome-free-regular/faCalendarAlt'); */
+
 :root {
   --primary: #78909c;
   --primary-dark: #4b636e;
@@ -73,7 +76,6 @@ button i {
   font-size: 12px;
   flex-grow: 1;
   margin-bottom: 10px;
-  font-family:monospace;
 }
 #user-input .invalid:focus {
   outline: none !important;
@@ -85,7 +87,6 @@ button i {
 }
 #hide-button-container {
   position: relative;
-  z-index: 99;
 }
 #hide-button {
   position: absolute;
@@ -99,9 +100,6 @@ button i {
   overflow: scroll;
   width: 100%;
   min-height: 200px;
-}
-#tree-container > svg {
-  position:relative;
 }
 .link {
   fill: none;
@@ -135,3 +133,4 @@ button i {
 .identity {
   font-family: STIXGeneral-Italic;
 }
+
